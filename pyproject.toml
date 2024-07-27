@@ -1,13 +1,13 @@
 [tool.poetry]
-name = "lcr-auth"
+name = "lcr_session"
 version = "1.0.0"
 description = "Session authentication to the Church of Jesus Christ of Latter Day Saints LCR System"
 authors = ["Isaac Wagner <14634+IsaacsLab42@users.noreply.github.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [{ include = "lcr-auth", from = "src" }]
-repository = "https://github.com/IsaacsLab42/lcr-auth"
-homepage = "https://github.com/IsaacsLab42/lcr-auth"
+packages = [{ include = "lcr_session", from = "src" }]
+repository = "https://github.com/IsaacsLab42/lcr_session"
+homepage = "https://github.com/IsaacsLab42/lcr_session"
 keywords = ["lcr", "churchofjesuschrist"]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
@@ -27,7 +27,7 @@ classifiers = [
 ]
 
 [tool.poetry.urls]
-"Bug Tracker" = "https://github.com/IsaacsLab42/lcr-auth/issues"
+"Bug Tracker" = "https://github.com/IsaacsLab42/lcr_session/issues"
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -42,6 +42,7 @@ ipdb = "^0.13.13"
 ufmt = "^2.7.0"
 tbump = "^6.11.0"
 mypy = "^1.11.0"
+types-requests = "^2.32.0.20240712"
 
 [build-system]
 requires = ["poetry-core"]
