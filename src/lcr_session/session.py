@@ -175,11 +175,15 @@ class LcrSession:
         )
         self._session.cookies.set_cookie(cookie)  # type: ignore
 
-        self._get_user_details()
-
         # Do the lcr and directory login stuff
-        self._session.get(ChurchUrl("lcr").render())
-        self._session.get(ChurchUrl("directory").render())
+        headers = {"Authorization": f"Bearer {self._token}"}
+        resp = self._session.get(ChurchUrl("lcr").render(), headers=headers)
+        resp.raise_for_status()
+
+        resp = self._session.get(ChurchUrl("directory").render(), headers=headers)
+        resp.raise_for_status()
+
+        self._get_user_details()
 
         self._save_cookies()
 
@@ -201,4 +205,5 @@ class LcrSession:
         )
         resp.raise_for_status()
         self._save_cookies()
+
         return resp.json()
