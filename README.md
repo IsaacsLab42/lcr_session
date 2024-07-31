@@ -58,7 +58,12 @@ I wrote some [fairly detailed
 notes](https://github.com/mackliet/church_of_jesus_christ_api/issues/16) for @mackliet.
 He took my notes and implemented them, for which I am grateful.
 
-After working with his 
+After working with his library for a while I wanted to make something a bit more
+generic, and that had the capability to save sessions to eliminate reauthentication on
+every single run of the script. I mean no disrespect. The Church of Jesus Christ API
+project is excellent, but didn't quite fit my personal needs.
+
+Anyway, that's how this library got started. I hope someone finds it useful.
 
 ## Future Plans
 
@@ -68,7 +73,9 @@ After working with his
 * More "well known URL's"
 * More examples
 * Saving more of the session state
-* ??? Open an issue with suggestions or problems encountered
+* What else? Please open an issue with suggestions or problems encountered. I do want to
+  keep this library fairly generic. This is meant to serve as a foundation for other
+  people to write scripts around.
 
 ## Footnotes
 
