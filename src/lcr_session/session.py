@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 import requests
+from requests.cookies import create_cookie
 
 from .urls import ChurchUrl, WELL_KNOWN_URLS
 from .utils import get_user_agent, merge_dict
@@ -58,6 +59,33 @@ class LcrSession:
         self._session = requests.Session()
         self._new_session()
 
+    def expired(self) -> bool:
+        for cookie in self._session.cookies:
+            if cookie.name == "oauth_id_token":
+                return cookie.is_expired()
+        return True
+
+    def get_session(self) -> requests.Session:
+        return self._session
+
+    def get_json(self, url: ChurchUrl, **kwargs) -> Any:
+        self._connect()
+        args = merge_dict(asdict(self._user_details), kwargs)  # type: ignore
+        return self._real_get_json(url, **args)
+
+    def _real_get_json(self, url: ChurchUrl, **kwargs) -> Any:
+        headers = {
+            "Accept": "application/json",
+            "Authorization": f"Bearer {self._token}",
+        }
+        resp = self._session.get(
+            url.render(**kwargs), timeout=self._timeout, headers=headers
+        )
+        resp.raise_for_status()
+        self._save_cookies()
+
+        return resp.json()
+
     def _new_session(self) -> None:
         self._session.close()
         session = requests.Session()
@@ -95,16 +123,10 @@ class LcrSession:
                 uuid=user["uuid"],
             )
 
-    def expired(self) -> bool:
-        for cookie in self._session.cookies:
-            if cookie.name == "oauth_id_token":
-                return cookie.is_expired()
-        return True
-
     def _connect(self) -> None:
         if not self.expired():
-            self._get_user_details()
             self._get_token_from_cookies()
+            self._get_user_details()
             return
 
         self._new_session()
@@ -155,25 +177,8 @@ class LcrSession:
 
         # Extract the access token and copy it to a new cookie
         self._get_token_from_cookies()
-        cookie = Cookie(
-            0,
-            "owp",
-            self._token,
-            None,
-            False,
-            "",
-            False,
-            False,
-            "",
-            False,
-            False,
-            None,
-            False,
-            None,
-            None,
-            {},
-        )
-        self._session.cookies.set_cookie(cookie)  # type: ignore
+        cookie = create_cookie(name="owp", value=self._token)
+        self._session.cookies.set_cookie(cookie)
 
         # Do the lcr and directory login stuff
         headers = {"Authorization": f"Bearer {self._token}"}
@@ -186,24 +191,3 @@ class LcrSession:
         self._get_user_details()
 
         self._save_cookies()
-
-    def get_session(self) -> requests.Session:
-        return self._session
-
-    def get_json(self, url: ChurchUrl, **kwargs) -> Any:
-        self._connect()
-        args = merge_dict(asdict(self._user_details), kwargs)  # type: ignore
-        return self._real_get_json(url, **args)
-
-    def _real_get_json(self, url: ChurchUrl, **kwargs) -> Any:
-        headers = {
-            "Accept": "application/json",
-            "Authorization": f"Bearer {self._token}",
-        }
-        resp = self._session.get(
-            url.render(**kwargs), timeout=self._timeout, headers=headers
-        )
-        resp.raise_for_status()
-        self._save_cookies()
-
-        return resp.json()
