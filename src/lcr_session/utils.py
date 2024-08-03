@@ -1,6 +1,11 @@
+"""
+This module contains utility functions used elsewhere in the LCR Session library.
+"""
+
 __all__ = ["get_user_agent", "merge_dict"]
 
 import platform
+from typing import Any
 
 from fake_useragent import UserAgent
 
@@ -14,7 +19,7 @@ def get_user_agent() -> str:
     platform that this script is run from.
 
     Returns:
-        str: User-Agent string
+        User-Agent string
     """
     my_platform = platform.system().lower()
     if my_platform == "windows":
@@ -30,7 +35,7 @@ def get_user_agent() -> str:
     return ua.random
 
 
-def merge_dict(dict1, dict2):
+def merge_dict(dict1: dict[Any, Any], dict2: dict[Any, Any]) -> dict[Any, Any]:
     """
     Merge the contents of two dictionaries together and create a 3rd
     dictionary. Items in dict1 with the same name as items in dict2

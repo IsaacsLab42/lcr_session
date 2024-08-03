@@ -1,4 +1,8 @@
-__all__ = ["ChurchUrl", "LcrSession"]
+"""
+Main session interface of this package.
+"""
+
+__all__ = ["UserDetails", "LcrSession"]
 
 import re
 from dataclasses import asdict, dataclass
@@ -22,13 +26,29 @@ _AUTH_URLS = {
 
 @dataclass
 class UserDetails:
+    """
+    Holds information pertaining to the logged in user.
+    """
+
     unit: int
+    """Assigned unit number. For example, the Ward unit number."""
+
     parent_unit: int
+    """Parent unit number, for example the stake."""
+
     member_id: int
+    """Member ID according to LCR"""
+
     uuid: str
+    """Unique UUID for the user."""
 
 
 class LcrSession:
+    """
+    Session class used for interacting with the Church of Jesus Christ of Latter-Day
+    Saints LCR system.
+    """
+
     def __init__(
         self,
         username: str,
@@ -37,6 +57,20 @@ class LcrSession:
         user_agent: str | None = None,
         cookie_jar_file: str | Path | None = None,
     ) -> None:
+        """
+        Args:
+            username: Username for LCR
+            password: Password for LCR
+            timeout_sec: HTTPS response timeout (seconds).
+            user_agent: Custom User-Agent to send in all HTTPS requests. If `None` then
+                a user agent string will be generated using the `fake_useragent` Python
+                package.
+            cookie_jar_file: File to store/load the session cookies. This allows
+                sessions to persist.
+
+        Raises:
+            TypeError: When one of the parameters is an invalid type.
+        """
         if not isinstance(username, str):
             raise TypeError("username must be a string")
         if not isinstance(password, str):
@@ -60,18 +94,70 @@ class LcrSession:
         self._new_session()
 
     def expired(self) -> bool:
+        """
+        Check to see if the existing session has expired. By default Church sessions
+        expire after one hour. This will check the cookie expiration.
+
+        Returns:
+            `True` if the session has expired. `False` otherwise.
+        """
         for cookie in self._session.cookies:
             if cookie.name == "oauth_id_token":
                 return cookie.is_expired()
         return True
 
+    def get_user_details(self) -> UserDetails:
+        """
+        Get the object containing the current user details.
+
+        Returns:
+            UserDetails object.
+        """
+        return self._user_details  # type: ignore
+
     def get_session(self) -> requests.Session:
+        """
+        Get a copy of the `Requests` session.
+
+        Returns:
+            The currently authentication Requests session.
+        """
         return self._session
 
-    def get_json(self, url: ChurchUrl, **kwargs) -> Any:
+    def get_json(self, url: ChurchUrl, **kwargs: dict[str, str]) -> Any:
+        """
+        Perform a GET request on the specified URL and return the resulting JSON.
+
+        Many of the Church API URL's require additional templated parameters. As an
+        example, to get the _Members With Callings_ report the URL is:
+
+            https://lcr.churchofjesuschrist.org/api/report/members-with-callings?unitNumber={unit}
+
+        In this case the unit number, for example the Ward or Branch, must be supplied.
+        This `get_json` method automatically supplies the values for these templated
+        parts of URL's. Any additional templated parameters need to be passed in by you.
+
+        * `{unit}` -- Your assigned unit number (Ward or Branch).
+        * `{parent_unit}` -- The parent of your unit (Stake, District, or Mission).
+        * `{member_id}` -- Your assigned LCR membership ID.
+        * `{uuid}` -- Your unique Church UUID. A few of the API calls use this.
+
+        Args:
+            url: A ChurchUrl object containing the API endpoint.
+            kwargs: Additional arguments that will be used to fill in templated URL's.
+
+        Returns:
+            Parsed JSON data as a Python dictionary.
+        """
         self._connect()
         args = merge_dict(asdict(self._user_details), kwargs)  # type: ignore
         return self._real_get_json(url, **args)
+
+    def _get_json_str_url(self, url: str, **kwargs) -> Any:
+        pass
+
+    def _get_json_church_url(self, url: ChurchUrl, **kwargs) -> Any:
+        pass
 
     def _real_get_json(self, url: ChurchUrl, **kwargs) -> Any:
         headers = {

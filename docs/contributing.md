@@ -35,9 +35,8 @@ experience for all involved. The community looks forward to your contributions. 
 ## Code of Conduct
 
 This project and everyone participating in it is governed by the [LCR Session Code of
-Conduct](https://github.com/IsaacsLab42/lcr_sessionblob/master/CODE_OF_CONDUCT.md). By
-participating, you are expected to uphold this code. Please report unacceptable behavior
-to <14634+IsaacsLab42@users.noreply.github.com>.
+Conduct](code-of-conduct.md). By participating, you are expected to uphold this code.
+Please report unacceptable behavior to <14634+IsaacsLab42@users.noreply.github.com>.
 
 
 ## I Have a Question
@@ -55,8 +54,7 @@ the following:
 
 - Open an [Issue](https://github.com/IsaacsLab42/lcr_session/issues/new).
 - Provide as much context as you can about what you're running into.
-- Provide project and platform versions (nodejs, npm, etc), depending on what seems
-  relevant.
+- Provide project and platform versions (nodejs, npm, etc), depending on what seems relevant.
 
 We will then take care of the issue as soon as possible.
 
@@ -109,8 +107,7 @@ us fix any potential bug as fast as possible.
 - Version of the interpreter, compiler, SDK, runtime environment, package manager,
   depending on what seems relevant.
 - Possibly your input and the output
-- Can you reliably reproduce the issue? And can you also reproduce it with older
-  versions?
+- Can you reliably reproduce the issue? And can you also reproduce it with older versions?
 
 <!-- omit in toc -->
 #### How Do I Submit a Good Bug Report?
@@ -177,8 +174,7 @@ Enhancement suggestions are tracked as [GitHub
 issues](https://github.com/IsaacsLab42/lcr_session/issues).
 
 - Use a **clear and descriptive title** for the issue to identify the suggestion.
-- Provide a **step-by-step description of the suggested enhancement** in as many details
-  as possible.
+- Provide a **step-by-step description of the suggested enhancement** in as many details as possible.
 - **Describe the current behavior** and **explain which behavior you expected to see
   instead** and why. At this point you can also tell which alternatives do not work for
   you.
@@ -195,12 +191,22 @@ issues](https://github.com/IsaacsLab42/lcr_session/issues).
 <!-- You might want to create an issue template for enhancement suggestions that can be used as a guide and that defines the structure of the information to be included. If you do so, reference it here in the description. -->
 
 ### Your First Code Contribution
+
+!!! info
+
+    TODO
+
 <!-- TODO
 include Setup of env, IDE and typical getting started instructions?
 
 -->
 
 ### Improving The Documentation
+
+!!! info
+
+    TODO
+
 <!-- TODO
 Updating, improving and correcting the documentation
 
@@ -208,11 +214,21 @@ Updating, improving and correcting the documentation
 
 ## Styleguides
 ### Commit Messages
+
+!!! info
+
+    TODO
+
 <!-- TODO
 
 -->
 
 ## Join The Project Team
+
+!!! info
+
+    TODO
+
 <!-- TODO -->
 
 <!-- omit in toc -->

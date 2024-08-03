@@ -1,0 +1,58 @@
+---
+site_name: LCR Session
+site_url: https://lcr-session.readthedocs.io/
+repo_url: https://github.com/IsaacsLab42/lcr_session
+copyright: Copyright (c) 2024 by Isaac Wagner
+
+theme:
+  name: material
+
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+  anchors: warn
+
+watch:
+  - src
+
+markdown_extensions:
+  - extra
+  - smarty
+  - toc
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+
+plugins:
+  - search
+  - section-index
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            heading_level: 1
+            show_if_no_docstring: false
+            show_bases: true
+            show_source: true
+            # show_root_heading: false
+            # show_root_members_full_path: true
+            # show_object_full_path: true
+            # group_by_category: false
+            # show_category_heading: true
+            merge_init_into_class: true
+
+nav:
+  - Home: index.md
+  - About: about.md
+  - "API Documentation":
+      - api/index.md
+      - "lcr_session.session": api/session.md
+      - "lcr_session.urls": api/urls.md
+      - "lcr_session.utils": api/utils.md
+  - License: license.md
+  - Contributing: contributing.md
+  - "Code of Conduct": code-of-conduct.md
