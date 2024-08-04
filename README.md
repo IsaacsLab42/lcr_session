@@ -1,18 +1,15 @@
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
-
 # LCR Session
 
 This library provides session authentication to the [Church of Jesus Christ of Latter
 Day Saints](https://www.churchofjesuschrist.org) Leader and Clerk Resources (LCR)
 System. This uses the very capable
-[Requests](https://requests.readthedocs.io/en/latest/)[^1] package to drive the web
+[Requests](https://requests.readthedocs.io/en/latest/) package to drive the web
 connection.
 
 This library can also save the cookies from an established session, which means that
 once you authenticate you can repeatedly use your scripts without have to
-reauthenticate[^2].
+reauthenticate.
 
-> [!NOTE]
 > This in an unofficial and independent project. In no way is this officially
 > associated with The Church of Jesus Christ of Latter-Day Saints. 
 
@@ -48,7 +45,7 @@ looking for ways to automate repetitive tasks. I think it's just in my DNA. At f
 looked into how the authentication happened between a web browser and the Church web
 servers. It was more complex than I expected. So I looked around for any existing GitHub
 projects. Most that I found were old and defunct. However, I did finally find [Church of
-Jesus Christ API](https://github.com/mackliet/church_of_jesus_christ_api) by @mackliet.
+Jesus Christ API](https://github.com/mackliet/church_of_jesus_christ_api).
 It worked, and so I started on my project to automate emails. Then I was released from
 my calling, and no longer worked with the young men, so the project was neglected.
 
@@ -57,8 +54,8 @@ tasks that can be automated. So, I started looking at the Church API again, only
 discover that at some point the Church ~~broke~~ changed their authentication, which
 broke the aforementioned API. After several long sessions dissecting the authentication
 I wrote some [fairly detailed
-notes](https://github.com/mackliet/church_of_jesus_christ_api/issues/16) for @mackliet.
-He took my notes and implemented them, for which I am grateful.
+notes](https://github.com/mackliet/church_of_jesus_christ_api/issues/16). He took my
+notes and implemented them, for which I am grateful.
 
 After working with his library for a while I wanted to make something a bit more
 generic, and that had the capability to save sessions to eliminate reauthentication on
@@ -78,11 +75,3 @@ Anyway, that's how this library got started. I hope someone finds it useful.
 * What else? Please open an issue with suggestions or problems encountered. I do want to
   keep this library fairly generic. This is meant to serve as a foundation for other
   people to write scripts around.
-
-## Footnotes
-
-[^1]: For now, anyway. I do plan on switching over to using
-    [Niquests](https://niquests.readthedocs.io/en/stable/) at some point. It is a more
-    modern and updated fork of Requests and includes HTTP/2 and HTTP/3 support.
-[^2]: At least until your session expires. By default Church sessions are valid for one
-    hour.
