@@ -37,7 +37,7 @@ class ChurchUrl:
     path: str = ""
     """Path of the API, including templated parameters."""
 
-    def render(self, **kwargs: dict[str, Any]) -> str:
+    def render(self, **kwargs: Any) -> str:
         """
         Renders the contained URL fragments into a fully qualified URL, suitable for use
         in a network request.

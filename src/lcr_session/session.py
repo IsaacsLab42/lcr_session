@@ -6,7 +6,7 @@ __all__ = ["UserDetails", "LcrSession"]
 
 import re
 from dataclasses import asdict, dataclass
-from http.cookiejar import Cookie, MozillaCookieJar
+from http.cookiejar import MozillaCookieJar
 from pathlib import Path
 from typing import Any
 
@@ -81,16 +81,15 @@ class LcrSession:
         self._password = password
         self._timeout = timeout_sec
         self._user_agent = user_agent or get_user_agent()
+        self._cookie_jar_file = None
+        self._cookie_jar = None
 
         if cookie_jar_file is not None:
             self._cookie_jar_file = Path(cookie_jar_file)
             self._cookie_jar = MozillaCookieJar(self._cookie_jar_file)
-        else:
-            self._cookie_jar_file = None
-            self._cookie_jar = None
 
-        self._token = None
-        self._user_details = None
+        self._token: str | None = None
+        self._user_details: UserDetails | None = None
         self._session = requests.Session()
         self._new_session()
 
@@ -125,7 +124,7 @@ class LcrSession:
         """
         return self._session
 
-    def get_json(self, url: str | ChurchUrl, **kwargs: dict[str, Any]) -> Any:
+    def get_json(self, url: str | ChurchUrl, **kwargs: Any) -> Any:
         """
         Perform a GET request on the specified URL and return the resulting JSON.
 
@@ -161,14 +160,56 @@ class LcrSession:
         else:
             raise TypeError("Unsupported URL type")
 
-    def _real_get_json(self, url: str, **kwargs: dict[str, Any]) -> Any:
+    def post_json(
+        self,
+        url: str | ChurchUrl,
+        json_data: Any | None = None,
+        **kwargs: Any,
+    ) -> Any:
+        """
+        Perform a POST request on the specified URL and return the resulting JSON.
+
+        This method automatically supplies the values for the following templated parts
+        of URL's. Any additional templated parameters need to be passed in by you.
+
+        * `{unit}` -- Your assigned unit number (Ward or Branch).
+        * `{parent_unit}` -- The parent of your unit (Stake, District, or Mission).
+        * `{member_id}` -- Your assigned LCR membership ID.
+        * `{uuid}` -- Your unique Church UUID. A few of the API calls use this.
+
+        Args:
+            url: Either the URL or a ChurchUrl object containing the API endpoint.
+            json_data: Optional JSON data to POST as the payload contents.
+            kwargs: Additional arguments that will be used to fill in templated URL's.
+
+        Returns:
+            Parsed JSON data as a Python dictionary.
+
+        Raises:
+            TypeError: When the URL passed in is an invalid type.
+        """
+        self._connect()
+        args = merge_dict(asdict(self._user_details), kwargs)  # type: ignore
+
+        if isinstance(url, str):
+            the_url = url.format(**args)
+        elif isinstance(url, ChurchUrl):
+            the_url = url.render(**args)
+        else:
+            raise TypeError("Unsupported URL type")
+
+        headers = {"Accept": "application/json"}
+        resp = self._session.post(the_url, json=json_data, headers=headers)
+        resp.raise_for_status()
+        self._save_cookies()
+
+        return resp.json()
+
+    def _real_get_json(self, url: str, **kwargs: Any) -> Any:
         """
         This performs the actual request, without calling `_connect` first.
         """
-        headers = {
-            "Accept": "application/json",
-            "Authorization": f"Bearer {self._token}",
-        }
+        headers = {"Accept": "application/json"}
         resp = self._session.get(
             url.format(**kwargs), timeout=self._timeout, headers=headers
         )
@@ -218,6 +259,8 @@ class LcrSession:
         if not self.expired():
             self._get_token_from_cookies()
             self._get_user_details()
+            if self._token is not None:
+                self._session.headers.update({"Authorization": f"Bearer {self._token}"})
             return
 
         self._new_session()
@@ -270,13 +313,13 @@ class LcrSession:
         self._get_token_from_cookies()
         cookie = create_cookie(name="owp", value=self._token)
         self._session.cookies.set_cookie(cookie)
+        self._session.headers.update({"Authorization": f"Bearer {self._token}"})
 
         # Do the lcr and directory login stuff
-        headers = {"Authorization": f"Bearer {self._token}"}
-        resp = self._session.get(ChurchUrl("lcr").render(), headers=headers)
+        resp = self._session.get(ChurchUrl("lcr").render())
         resp.raise_for_status()
 
-        resp = self._session.get(ChurchUrl("directory").render(), headers=headers)
+        resp = self._session.get(ChurchUrl("directory").render())
         resp.raise_for_status()
 
         self._get_user_details()

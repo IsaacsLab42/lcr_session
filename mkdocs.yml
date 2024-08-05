@@ -6,6 +6,8 @@ copyright: Copyright (c) 2024 by Isaac Wagner
 
 theme:
   name: material
+  features:
+    - content.code.copy
 
 validation:
   omitted_files: warn
@@ -22,6 +24,12 @@ markdown_extensions:
   - toc
   - admonition
   - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
   - pymdownx.superfences
 
 plugins:
@@ -48,6 +56,7 @@ plugins:
 nav:
   - Home: index.md
   - About: about.md
+  - "Common URL Endpoints": endpoints.md
   - "API Documentation":
       - api/index.md
       - "lcr_session.session": api/session.md

@@ -7,7 +7,7 @@ __all__ = ["get_user_agent", "merge_dict"]
 import platform
 from typing import Any
 
-from fake_useragent import UserAgent
+from fake_useragent import UserAgent  # type: ignore
 
 
 def get_user_agent() -> str:
