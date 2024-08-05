@@ -13,7 +13,7 @@ from typing import Any
 import requests
 from requests.cookies import create_cookie
 
-from .urls import ChurchUrl, WELL_KNOWN_URLS
+from .urls import ChurchUrl
 from .utils import get_user_agent, merge_dict
 
 _AUTH_URLS = {
@@ -21,6 +21,7 @@ _AUTH_URLS = {
     "introspect": ChurchUrl("id", "idp/idx/introspect"),
     "identify": ChurchUrl("id", "idp/idx/identify"),
     "challenge_answer": ChurchUrl("id", "idp/idx/challenge/answer"),
+    "user": ChurchUrl("directory", "api/v4/user"),
 }
 
 
@@ -124,7 +125,7 @@ class LcrSession:
         """
         return self._session
 
-    def get_json(self, url: ChurchUrl, **kwargs: dict[str, str]) -> Any:
+    def get_json(self, url: str | ChurchUrl, **kwargs: dict[str, Any]) -> Any:
         """
         Perform a GET request on the specified URL and return the resulting JSON.
 
@@ -133,9 +134,8 @@ class LcrSession:
 
             https://lcr.churchofjesuschrist.org/api/report/members-with-callings?unitNumber={unit}
 
-        In this case the unit number, for example the Ward or Branch, must be supplied.
-        This `get_json` method automatically supplies the values for these templated
-        parts of URL's. Any additional templated parameters need to be passed in by you.
+        This method automatically supplies the values for the following templated parts
+        of URL's. Any additional templated parameters need to be passed in by you.
 
         * `{unit}` -- Your assigned unit number (Ward or Branch).
         * `{parent_unit}` -- The parent of your unit (Stake, District, or Mission).
@@ -143,29 +143,34 @@ class LcrSession:
         * `{uuid}` -- Your unique Church UUID. A few of the API calls use this.
 
         Args:
-            url: A ChurchUrl object containing the API endpoint.
+            url: Either the URL or a ChurchUrl object containing the API endpoint.
             kwargs: Additional arguments that will be used to fill in templated URL's.
 
         Returns:
             Parsed JSON data as a Python dictionary.
+
+        Raises:
+            TypeError: When the URL passed in is an invalid type.
         """
         self._connect()
         args = merge_dict(asdict(self._user_details), kwargs)  # type: ignore
-        return self._real_get_json(url, **args)
+        if isinstance(url, str):
+            return self._real_get_json(url, **args)
+        elif isinstance(url, ChurchUrl):
+            return self._real_get_json(url.as_str(), **args)
+        else:
+            raise TypeError("Unsupported URL type")
 
-    def _get_json_str_url(self, url: str, **kwargs) -> Any:
-        pass
-
-    def _get_json_church_url(self, url: ChurchUrl, **kwargs) -> Any:
-        pass
-
-    def _real_get_json(self, url: ChurchUrl, **kwargs) -> Any:
+    def _real_get_json(self, url: str, **kwargs: dict[str, Any]) -> Any:
+        """
+        This performs the actual request, without calling `_connect` first.
+        """
         headers = {
             "Accept": "application/json",
             "Authorization": f"Bearer {self._token}",
         }
         resp = self._session.get(
-            url.render(**kwargs), timeout=self._timeout, headers=headers
+            url.format(**kwargs), timeout=self._timeout, headers=headers
         )
         resp.raise_for_status()
         self._save_cookies()
@@ -201,7 +206,7 @@ class LcrSession:
     def _get_user_details(self) -> None:
         if self._user_details is None:
             # Get details for the current user
-            user = self._real_get_json(WELL_KNOWN_URLS["user"])
+            user = self._real_get_json(_AUTH_URLS["user"].as_str())
             self._user_details = UserDetails(
                 unit=user["homeUnits"][0],
                 parent_unit=user["parentUnits"][0],

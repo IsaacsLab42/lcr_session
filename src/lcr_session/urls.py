@@ -1,6 +1,7 @@
 from dataclasses import dataclass
+from typing import Any
 
-__all__ = ["ChurchUrl", "WELL_KNOWN_URLS"]
+__all__ = ["ChurchUrl", "BASE_URL"]
 
 BASE_URL: str = "https://{subdomain}.churchofjesuschrist.org/{path}"
 
@@ -36,7 +37,7 @@ class ChurchUrl:
     path: str = ""
     """Path of the API, including templated parameters."""
 
-    def render(self, **kwargs: dict[str, str]) -> str:
+    def render(self, **kwargs: dict[str, Any]) -> str:
         """
         Renders the contained URL fragments into a fully qualified URL, suitable for use
         in a network request.
@@ -53,19 +54,11 @@ class ChurchUrl:
         path = self.path.format(**kwargs)
         return BASE_URL.format(subdomain=self.subdomain, path=path, **kwargs)
 
+    def as_str(self) -> str:
+        """
+        Get the URL as a string, though not fully substituted.
 
-WELL_KNOWN_URLS = {
-    "users-me": ChurchUrl("id", "api/v1/users/me"),
-    "user": ChurchUrl("directory", "api/v4/user"),
-    "members-with-callings": ChurchUrl(
-        "lcr", "api/report/members-with-callings?unitNumber={unit}"
-    ),
-}
-"""
-This is a dictionary of known API endpoints that return JSON data. Currently, these are
-the known endpoints:
-
-* `users-me`
-* `users`
-* `members-with-callings`
-"""
+        Returns:
+            String URL
+        """
+        return BASE_URL.format(subdomain=self.subdomain, path=self.path)

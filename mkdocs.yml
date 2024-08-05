@@ -54,5 +54,3 @@ nav:
       - "lcr_session.urls": api/urls.md
       - "lcr_session.utils": api/utils.md
   - License: license.md
-  - Contributing: contributing.md
-  - "Code of Conduct": code-of-conduct.md
