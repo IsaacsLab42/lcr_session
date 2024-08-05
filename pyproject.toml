@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lcr_session"
-version = "1.0.0"
+version = "1.0.1"
 description = "Session authentication to the Church of Jesus Christ of Latter Day Saints LCR System"
 authors = ["Isaac Wagner <14634+IsaacsLab42@users.noreply.github.com>"]
 license = "MIT"
