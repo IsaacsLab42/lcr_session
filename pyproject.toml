@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{ include = "lcr_session", from = "src" }]
 repository = "https://github.com/IsaacsLab42/lcr_session"
 homepage = "https://github.com/IsaacsLab42/lcr_session"
-documentation = "https://lcr-session.readthedocs.io/"
+documentation = "https://lcr-session.readthedocs.io/en/stable/"
 keywords = ["lcr", "churchofjesuschrist"]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -32,12 +32,12 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.10"
 requests = "^2.32.3"
-ipython = "^8.26.0"
-ipdb = "^0.13.13"
 fake-useragent = "^1.5.1"
 
 [tool.poetry.group.dev.dependencies]
 ufmt = "^2.7.0"
+ipython = "^8.26.0"
+ipdb = "^0.13.13"
 tbump = "^6.11.0"
 mypy = "^1.11.1"
 types-requests = "^2.32.0.20240712"
