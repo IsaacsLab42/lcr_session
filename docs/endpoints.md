@@ -55,6 +55,14 @@ ChurchUrl("lcr", "api/report/members-with-callings?unitNumber={unit}")
 ChurchUrl("lcr", "api/orgs/members-without-callings?unitNumber={unit}")
 ```
 
+```python title="Sacrament Meeting Attendance"
+ChurchUrl("lcr", "api/sacrament-attendance/unit/{unit}/years/{year}")
+```
+
+```python title="Protecting Children and Youth Training"
+ChurchUrl("lcr", "api/report/child-protection")
+```
+
 ```python title="Temple Recommend Status"
 ChurchUrl("lcr", "api/temple-recommend/report?unitNumber={unit}")
 ```

@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import Any
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 __all__ = ["ChurchUrl", "BASE_URL"]
 
@@ -51,14 +52,11 @@ class ChurchUrl:
         Returns:
             Rendered URL, with all templated parameters replaced.
         """
-        path = self.path.format(**kwargs)
-        return BASE_URL.format(subdomain=self.subdomain, path=path, **kwargs)
-
-    def as_str(self) -> str:
-        """
-        Get the URL as a string, though not fully substituted.
-
-        Returns:
-            String URL
-        """
-        return BASE_URL.format(subdomain=self.subdomain, path=self.path)
+        # "raw" as in not fully rendered
+        raw_url_str = BASE_URL.format(subdomain=self.subdomain, path=self.path)
+        cooked_url_str = raw_url_str.format(**kwargs)
+        url_parts = urlsplit(cooked_url_str)
+        query_dict = dict(parse_qsl(url_parts.query))
+        query_dict["lang"] = "eng"
+        url_parts = url_parts._replace(query=urlencode(query_dict))
+        return urlunsplit(url_parts)

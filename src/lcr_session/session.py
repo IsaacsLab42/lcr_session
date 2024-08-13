@@ -156,7 +156,7 @@ class LcrSession:
         if isinstance(url, str):
             return self._real_get_json(url, **args)
         elif isinstance(url, ChurchUrl):
-            return self._real_get_json(url.as_str(), **args)
+            return self._real_get_json(url.render(**args))
         else:
             raise TypeError("Unsupported URL type")
 
@@ -247,7 +247,7 @@ class LcrSession:
     def _get_user_details(self) -> None:
         if self._user_details is None:
             # Get details for the current user
-            user = self._real_get_json(_AUTH_URLS["user"].as_str())
+            user = self._real_get_json(_AUTH_URLS["user"].render())
             self._user_details = UserDetails(
                 unit=user["homeUnits"][0],
                 parent_unit=user["parentUnits"][0],
