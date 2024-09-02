@@ -8,10 +8,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
+- Additional Church API URL's
+
 ### Changed
+
+- Changed dependabot execution frequency to once per month
+
 ### Deprecated
 ### Removed
 ### Fixed
+
+- Fixed the way the `ChurchUrl` renders the final URL result.
+
 ### Security
 
 ## [1.0.2] - 2024-08-11
+
+### Added
+
+- Added dependabot to Github actions
+
+### Changed
+
+- Updated several dependency versions
+
+## [1.0.1] - 2024-08-05
+
+### Added
+
+- Added configuration for [tbump](https://github.com/your-tools/tbump)
+- Python docstrings to several methods
+- Additional user documentation
+- List of common Church endpoints
+
+### Fixed
+
+- Fixed several type hints
+
+## [1.0.0] - 2024-08-03
+
+- First release
