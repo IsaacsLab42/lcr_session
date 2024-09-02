@@ -14,12 +14,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Changed dependabot execution frequency to once per month
+- Change the PyPI trove classifier to "Development Status :: 5 - Production/Stable"
+- Updated dependency versions
 
 ### Deprecated
 ### Removed
 ### Fixed
 
-- Fixed the way the `ChurchUrl` renders the final URL result.
+- Fixed the way the `ChurchUrl` renders the final URL result to provide more
+  consistency.
 
 ### Security
 
