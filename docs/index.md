@@ -16,6 +16,9 @@
     <a href="https://github.com/IsaacsLab42/lcr_session/">
         <img src="https://img.shields.io/github/license/IsaacsLab42/lcr_session"/>
     </a>
+    <a href="https://black.readthedocs.io/en/stable/">
+        <img src="https://img.shields.io/badge/code_style-black-black"/>
+    </a>
 </p>
 
 ---
