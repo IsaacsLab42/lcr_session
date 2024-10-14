@@ -47,6 +47,10 @@ ChurchUrl("directory", "api/v4/households?unit={unit}")
 ChurchUrl("lcr", "api/umlu/report/member-list?unitNumber={unit}")
 ```
 
+```python title="Members Moved Out"
+ChurchUrl("lcr", "api/umlu/report/members-moved-out/unit/{unit}/{months}")
+```
+
 ```python title="Members With Callings"
 ChurchUrl("lcr", "api/report/members-with-callings?unitNumber={unit}")
 ```
