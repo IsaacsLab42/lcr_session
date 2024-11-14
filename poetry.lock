@@ -1397,13 +1397,13 @@ files = [
 
 [[package]]
 name = "ufmt"
-version = "2.7.3"
+version = "2.8.0"
 description = "Safe, atomic formatting with black and µsort"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "ufmt-2.7.3-py3-none-any.whl", hash = "sha256:1a3d2515e3108ba7a68425ebdeb4cbb1fdfbcffbd031dac8f56a1f386a7b396e"},
-    {file = "ufmt-2.7.3.tar.gz", hash = "sha256:b661c575bfb95a617d04fa4fe5cde550d21eb848094b3f9c438165459bc04f77"},
+    {file = "ufmt-2.8.0-py3-none-any.whl", hash = "sha256:47a690811c576ebd3a0e30d77d43b65c84240e5c1611e5cb4a880bdd7f4507c1"},
+    {file = "ufmt-2.8.0.tar.gz", hash = "sha256:72c9502915497678de9aeab8aa18604890f14f869f7f378dd26e2878bde84f13"},
 ]
 
 [package.dependencies]
@@ -1417,10 +1417,10 @@ typing-extensions = ">=4.0"
 usort = ">=1.0"
 
 [package.extras]
-dev = ["attribution (==1.8.0)", "black (==24.8.0)", "build (>=1.2)", "coverage (>=7)", "flake8 (==7.1.1)", "mypy (==1.11.2)", "pygls (==1.3.1)", "ruff-api (==0.0.8)", "usort (==1.0.8.post1)"]
+dev = ["attribution (==1.8.0)", "black (==24.8.0)", "build (>=1.2)", "coverage (>=7)", "flake8 (==7.1.1)", "mypy (==1.11.2)", "pygls (==1.3.1)", "ruff-api (==0.1.0)", "usort (==1.0.8.post1)"]
 docs = ["sphinx (==8.0.2)", "sphinx-mdinclude (==0.6.2)"]
 lsp = ["pygls (>=1.3)"]
-ruff = ["ruff-api (>=0.0.8)"]
+ruff = ["ruff-api (>=0.1.0)"]
 
 [[package]]
 name = "unidecode"
