@@ -33,7 +33,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.10"
 requests = "^2.32.3"
-fake-useragent = "^1.5.1"
+fake-useragent = ">=1.5.1,<3.0.0"
 
 [tool.poetry.group.dev.dependencies]
 ufmt = "^2.7.0"
