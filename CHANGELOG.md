@@ -8,9 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - URL for Members Moved Out report
 
 ### Changed
+
+- Upgraded pyproject.toml to be compatible with Poetry v2
+
 ### Deprecated
 ### Removed
 ### Fixed
