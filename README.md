@@ -23,6 +23,8 @@
 
 ---
 
+## Introduction
+
 This library provides session authentication to the [Church of Jesus Christ of Latter
 Day Saints](https://www.churchofjesuschrist.org) Leader and Clerk Resources (LCR)
 System. This uses the very capable
@@ -33,8 +35,16 @@ This library can also save the cookies from an established session, which means 
 once you authenticate you can repeatedly use your scripts without have to
 reauthenticate.
 
-> This in an unofficial and independent project. In no way is this officially
-> associated with The Church of Jesus Christ of Latter-Day Saints.
+## Disclaimer
+
+This in an unofficial and independent project. This is NOT officially associated with
+The Church of Jesus Christ of Latter-Day Saints.
+
+## Installation
+
+```bash
+pip install lcr-session
+```
 
 ## Quick Start
 
