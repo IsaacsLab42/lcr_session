@@ -40,6 +40,12 @@ reauthenticate.
     This in an unofficial and independent project. In no way is this officially
     associated with The Church of Jesus Christ of Latter-Day Saints.
 
+# Installation
+
+```bash
+pip install lcr-session
+```
+
 # Quick Start
 
 Here's a very simple and quick illustration of how to use the API. Note that some URL's
