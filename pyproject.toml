@@ -1,6 +1,6 @@
 [project]
 name = "lcr_session"
-version = "1.0.3"
+version = "1.1.0"
 description = "Session authentication to the Church of Jesus Christ of Latter Day Saints LCR System"
 authors = [
     { name = "Isaac Wagner", email = "14634+IsaacsLab42@users.noreply.github.com" },
