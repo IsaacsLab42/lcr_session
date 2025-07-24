@@ -20,6 +20,7 @@ _AUTH_URLS = {
     "login": ChurchUrl("www", "services/platform/v4/login"),
     "introspect": ChurchUrl("id", "idp/idx/introspect"),
     "identify": ChurchUrl("id", "idp/idx/identify"),
+    "challenge": ChurchUrl("id", "idp/idx/challenge"),
     "challenge_answer": ChurchUrl("id", "idp/idx/challenge/answer"),
     "user": ChurchUrl("directory", "api/v4/user"),
 }
@@ -292,7 +293,31 @@ class LcrSession:
             json={"identifier": self._username, "stateHandle": state_token},
         )
         resp.raise_for_status()
-        state_handle = resp.json()["stateHandle"]
+        identify_resp = resp.json()
+        state_handle = identify_resp["stateHandle"]
+
+        # Retrieve password authenticator ID (in case it changes by session,etc)
+        authenticator_id = next(
+            opt["value"]["form"]["value"][0]["value"]
+            for item in identify_resp.get("remediation", {}).get("value", [])
+            if item.get("name") == "select-authenticator-authenticate"
+            for opt in item.get("value", [])[0].get("options", [])
+            if opt.get("label", "").lower() == "password"
+        )
+
+        # Post the authentication type
+        resp = self._session.post(
+            _AUTH_URLS["challenge"].render(),
+            timeout=self._timeout,
+            json={
+                "stateHandle": state_handle,
+                "authenticator": {
+                    "id": authenticator_id,
+                    "methodType": "password",
+                },
+            },
+        )
+        resp.raise_for_status()
 
         # Post the password
         resp = self._session.post(
